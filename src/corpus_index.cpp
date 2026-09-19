@@ -19,7 +19,6 @@ void CorpusIndex::build(const std::vector<Chunk>& chunks) {
     for (std::size_t i = 0; i < chunks.size(); i++) {
         chunk_by_id_[chunks[i].id] = i;
 
-        
         // get terms
         std::vector<std::string> terms = TextProcessor::terms(chunks[i].text);
         std::unordered_map<std::string, std::size_t> frequencies;
@@ -34,7 +33,6 @@ void CorpusIndex::build(const std::vector<Chunk>& chunks) {
             Posting posting;
             posting.chunk_index = i;
             posting.frequency = pair.second;
-
             postings_[pair.first].push_back(posting);
         }
     }

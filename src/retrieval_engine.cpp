@@ -44,8 +44,7 @@ std::vector<SearchResult> RetrievalEngine::search(const std::string& query,
 
     // score each query term
     for (const std::string& term : unique_terms) {
-        const std::vector<CorpusIndex::Posting>* term_postings =
-            index.postings(term);
+        const std::vector<CorpusIndex::Posting>* term_postings = index.postings(term);
 
         // skip terms not in corpus
         if (term_postings == nullptr) {
@@ -54,14 +53,11 @@ std::vector<SearchResult> RetrievalEngine::search(const std::string& query,
 
         std::size_t df = index.document_frequency(term);
 
-        double idf = std::log(
-            static_cast<double>(total_chunks + 1) /
-            static_cast<double>(df + 1)) + 1.0;
+        double idf = std::log(static_cast<double>(total_chunks + 1) /static_cast<double>(df + 1)) + 1.0;
 
         // score chunks with this term
         for (const CorpusIndex::Posting& posting : *term_postings) {
-            double tf = 1.0 + std::log(
-                static_cast<double>(posting.frequency));
+            double tf = 1.0 + std::log(static_cast<double>(posting.frequency));
 
             scores[posting.chunk_index] += tf * idf;
             matched[posting.chunk_index]++;
@@ -75,9 +71,7 @@ std::vector<SearchResult> RetrievalEngine::search(const std::string& query,
         std::size_t chunk_index = pair.first;
         const Chunk& chunk = chunks[chunk_index];
 
-        double coverage = 1.0 + 0.10 *
-            static_cast<double>(matched[chunk_index]) /
-            static_cast<double>(unique_terms.size());
+        double coverage = 1.0 + 0.10 *static_cast<double>(matched[chunk_index]) /static_cast<double>(unique_terms.size());
 
         double score = canonical_score(pair.second * coverage);
 
