@@ -1,1 +1,6 @@
-build/commit
+
+!src/
+!src/**
+!tests/
+!tests/**
+!DESIGN.md
